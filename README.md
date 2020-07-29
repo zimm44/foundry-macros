@@ -1,8 +1,7 @@
 # foundry-macros
-Personal macros for foundry-vtt
+Personal macros for Foundry-VTT
 
-
-Macros created by Zimm#2324
+Owner: Zimm#2324
 
 The file macros.db is a pre-made compendium with all macros v1.0 updated until 29-july-2020.
 
