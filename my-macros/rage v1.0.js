@@ -4,6 +4,9 @@
 let effectsOn = true;
 const noEffectsIcon = 'icons/svg/explosion.svg';
 
+//set false if you don't want neither effects nor icons to be added after activating the macro
+let setEffectsIcon = true;
+
 //must match values in character sheet (if present)
 const rageClassName = 'Barbarian';
 let featName = "Rage";
@@ -77,16 +80,18 @@ if (actorData.length == 1) { //if only one is selected
       }
       actorData.update(obj);
 
-      if (effectsOn) {
-        //delete all filters on the selected tokens/tiles
-        TokenMagic.deleteFiltersOnSelected();
-      } else {
-        //remove icon from token
-        if (actorTokenData.data.effects.includes(noEffectsIcon)) {
-          actorTokenData.toggleEffect(noEffectsIcon);
+      if (setEffectsIcon) {
+        if (effectsOn) {
+          //delete all filters on the selected tokens/tiles
+          TokenMagic.deleteFiltersOnSelected();
+        } else {
+          //remove icon from token
+          if (actorTokenData.data.effects.includes(noEffectsIcon)) {
+            actorTokenData.toggleEffect(noEffectsIcon);
+          }
         }
       }
-      
+
       let chatMsg = `<div class="dnd5e chat-card item-card"">${actorData.name} is no longer raging.</div>`;
       toChat(chatMsg);
 
@@ -195,49 +200,51 @@ if (actorData.length == 1) { //if only one is selected
         default: "Cancel",
         close: html => {
             if (confirmed) {
-              if (effectsOn) {
-                //add effects filter template with Tokenmagic module
-                let params =
-                [{
-                    filterType: "fire",
-                    intensity: 1,
-                    color: 0xFFFFFF,
-                    amplitude: 1,
-                    time: 0,
-                    blend: 2,
-                    fireBlend : 1,
-                    animated :
-                    {
-                      time : 
-                      { 
-                        active: true, 
-                        speed: -0.0019, 
-                        animType: "move" 
-                      },
-                      intensity:
+              if (setEffectsIcon) {
+                if (effectsOn) {
+                  //add effects filter template with Tokenmagic module
+                  let params =
+                  [{
+                      filterType: "fire",
+                      intensity: 1,
+                      color: 0xFFFFFF,
+                      amplitude: 1,
+                      time: 0,
+                      blend: 2,
+                      fireBlend : 1,
+                      animated :
                       {
-                        active:true,
-                        loopDuration: 15485,
-                        val1: 0.8,
-                        val2: 1,
-                        animType: "syncCosOscillation"
-                      },
-                      amplitude:
-                      {
-                        active:true,
-                        loopDuration: 4567,
-                        val1: 0.1,
-                        val2: 0.3,
-                        animType: "syncCosOscillation"
+                        time : 
+                        { 
+                          active: true, 
+                          speed: -0.0019, 
+                          animType: "move" 
+                        },
+                        intensity:
+                        {
+                          active:true,
+                          loopDuration: 15485,
+                          val1: 0.8,
+                          val2: 1,
+                          animType: "syncCosOscillation"
+                        },
+                        amplitude:
+                        {
+                          active:true,
+                          loopDuration: 4567,
+                          val1: 0.1,
+                          val2: 0.3,
+                          animType: "syncCosOscillation"
+                        }
+                        
                       }
-                      
-                    }
-                }];                        
-                TokenMagic.addFiltersOnSelected(params);
-              } else {
-                //add icon to token
-                if (!actorTokenData.data.effects.includes(noEffectsIcon)) {
-                  actorTokenData.toggleEffect(noEffectsIcon);
+                  }];                        
+                  TokenMagic.addFiltersOnSelected(params);
+                } else {
+                  //add icon to token
+                  if (!actorTokenData.data.effects.includes(noEffectsIcon)) {
+                    actorTokenData.toggleEffect(noEffectsIcon);
+                  }
                 }
               }                     
             }
